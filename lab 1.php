@@ -35,8 +35,8 @@ abstract class Product {
 
 // Наследник класса Product - Электронный товар
 class ElectronicProduct extends Product {
-    private $warranty; // Гарантия
-    private $brand; // Бренд
+    public $warranty; // Гарантия
+    public $brand; // Бренд
     
     public function __construct($id, $name, $price, $description, $stock, $category, $warranty, $brand) {
         parent::__construct($id, $name, $price, $description, $stock, $category);
@@ -56,9 +56,9 @@ class ElectronicProduct extends Product {
 
 // Наследник класса Product - Одежда
 class ClothingProduct extends Product {
-    private $size;
-    private $color;
-    private $material;
+    public $size;
+    public $color;
+    public $material;
     
     public function __construct($id, $name, $price, $description, $stock, $category, $size, $color, $material) {
         parent::__construct($id, $name, $price, $description, $stock, $category);
@@ -107,12 +107,12 @@ class Cart {
 
 // Класс для пользователя
 class User {
-    private $id;
-    private $username;
-    private $email;
-    private $password;
-    private $address;
-    private $orderHistory = []; // История заказов
+    public $id;
+    public $username;
+    public $email;
+    public $password;
+    public $address;
+    public $orderHistory = []; // История заказов
     
     public function __construct($id, $username, $email, $password, $address) {
         $this->id = $id;
@@ -135,12 +135,12 @@ class User {
 
 // Класс для отзыва
 class Review {
-    private $id;
-    private $productId; // ID продукта, можно использовать для связи в бдate 
-    private $userId; // Аналогично и с user
-    private $rating; // Оценка
-    private $comment; // Комментарий
-    private $date; // Дата отзыва
+    public $id;
+    public $productId; // ID продукта, можно использовать для связи в бдate 
+    public $userId; // Аналогично и с user
+    public $rating; // Оценка
+    public $comment; // Комментарий
+    public $date; // Дата отзыва
     
     public function __construct($id, $productId, $userId, $rating, $comment) {
         $this->id = $id;
