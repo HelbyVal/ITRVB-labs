@@ -16,11 +16,16 @@ class User {
     public function __toString() {
         return
             "ID : " . $this->getId() . "<br>" .
+            "Никнейм : " . $this->getNickname() . "<br>" .
             $this->getName() . "<br>";
     }
 
     public function getId() {
         return $this->id;
+    }
+
+    public function getNickname() {
+        return $this->nickname;
     }
 
     public function getName() {
