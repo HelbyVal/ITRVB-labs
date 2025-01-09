@@ -6,7 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
+    'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Helby\\lessons\\' => array($baseDir . '/src'),
     'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),
+    'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
 );

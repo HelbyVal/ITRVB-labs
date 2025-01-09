@@ -2,9 +2,15 @@
 
 namespace Helby\lessons\Blog;
 
-class User {
-    public function __construct(public $id, private readonly Name $name) {
+use Ramsey\Uuid\Uuid;
 
+class User {
+    public function __construct(
+        private string $id,
+        private string $nickname,
+        private Name $name) {
+        // Генерация UUID, если не передан
+        $this->id = $this->id ?: Uuid::uuid4()->toString();
     }
 
     public function __toString() {
