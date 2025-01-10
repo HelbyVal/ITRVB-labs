@@ -3,6 +3,7 @@
 namespace Helby\lessons\Routing;
 use Helby\lessons\Controllers\CommentsController;
 use Helby\lessons\Controllers\ArticlesController;
+use Helby\lessons\Controllers\LikesController;
 class Route
 {
     public static $ROUTER;
@@ -15,9 +16,13 @@ class Route
             self::$ROUTER = $this;
             $commentsController = new CommentsController($databasePath);
             $articlesController = new ArticlesController($databasePath);
+            $likesController = new LikesController($databasePath);
             $this->add('POST', '/posts/comment', [$commentsController, 'addComment']);
             $this->add('POST', '/articles/add', [$articlesController, 'addArticle']);
             $this->add('GET', '/articles', [$articlesController, 'getArticle']);
+            $this->add('GET', '/articles/delete?uuid={article_uuid}', [$articlesController, 'deleteArticle']);
+            $this->add('POST', '/like/article', [$likesController, 'addArticleLike']);
+            $this->add('POST', '/like/comment', [$likesController, 'addCommentLike']);
         } 
     }
 
