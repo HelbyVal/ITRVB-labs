@@ -49,4 +49,15 @@ class SQLiteArticlesRepository implements ArticlesRepositoryInterface
         $stmt->bindValue(':text', $article->getText(), SQLITE3_TEXT);
         $stmt->execute();
     }
+
+    public function delete(UuidInterface $id): void
+    {
+        $stmt = $this->db->prepare('DELETE FROM articles WHERE id = :id');
+        $stmt->bindValue(':id', $id->toString(), SQLITE3_TEXT);
+        $stmt->execute();
+
+        if ($this->db->changes() === 0) {
+            throw new \Exception("Article with ID {$id->toString()} not found.");
+        }
+    }
 }

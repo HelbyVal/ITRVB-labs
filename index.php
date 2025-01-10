@@ -4,8 +4,13 @@ use Helby\lessons\Blog\Article;
 use Helby\lessons\Blog\Comment;
 use Helby\lessons\Blog\User;
 use Helby\lessons\Blog\Name;
+use Helby\lessons\Routing\Route;
 
 require __DIR__ .'/vendor/autoload.php';
+
+$router = new Route(__DIR__ . '/database.db');
+$router->dispatch();
+
 
 $faker = Faker\Factory::create('ru_RU');
 
