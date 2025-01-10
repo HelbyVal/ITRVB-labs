@@ -4,16 +4,20 @@ use PHPUnit\Framework\TestCase;
 use Helby\lessons\Repositories\SQLiteArticlesRepository;
 use Helby\lessons\Blog\Article;
 use Ramsey\Uuid\Guid\Guid;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class SQLiteArticlesRepositoryTest extends TestCase
 {
     private SQLiteArticlesRepository $repository;
     private string $dbFile = __DIR__ . '/test.db'; 
+    private Logger $logger;
 
     protected function setUp(): void
     {
-
-        $this->repository = new SQLiteArticlesRepository($this->dbFile);
+        $this->logger = new Logger('test');
+        $this->logger->pushHandler(new StreamHandler(__DIR__ . '/test.log', Logger::DEBUG));
+        $this->repository = new SQLiteArticlesRepository($this->dbFile, $this->logger);
 
         $this->initializeDatabase();
     }

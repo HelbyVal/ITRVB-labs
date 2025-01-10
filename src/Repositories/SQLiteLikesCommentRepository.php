@@ -4,15 +4,18 @@ namespace Helby\lessons\Repositories;
 
 use Helby\lessons\Blog\LikeComment;
 use Ramsey\Uuid\UuidInterface;
+use Psr\Log\LoggerInterface;
 use SQLite3;
 
 class SQLiteLikesCommentRepository implements LikesCommentRepositoryInterface
 {
     private SQLite3 $db;
+    private LoggerInterface $logger;
 
-    public function __construct(string $databasePath)
+    public function __construct(string $databasePath, LoggerInterface $logger)
     {
         $this->db = new SQLite3($databasePath);
+        $this->logger = $logger;
     }
 
     public function get(UuidInterface $id): LikeComment
@@ -22,6 +25,7 @@ class SQLiteLikesCommentRepository implements LikesCommentRepositoryInterface
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
         if (!$result) {
+            $this->logger->warning("Like with ID {$id->toString()} not found.");
             throw new \Exception("Like with ID {$id->toString()} not found.");
         }
 
@@ -45,6 +49,8 @@ class SQLiteLikesCommentRepository implements LikesCommentRepositoryInterface
         $stmt->bindValue(':author_id', $like->getAuthorId(), SQLITE3_TEXT);
         $stmt->bindValue(':comment_id', $like->getCommentId(), SQLITE3_TEXT);
         $stmt->execute();
+
+        $this->logger->info("Like {$like->getId()} saved successfully.");
     }
 
 }

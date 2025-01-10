@@ -6,26 +6,22 @@ use Helby\lessons\Blog\User;
 use Helby\lessons\Blog\Name;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Psr\Log\LoggerInterface;
 
 class SQLiteUsersRepository implements UsersRepositoryInterface
 {
-    private \SQLite3 $connection;
+    private \SQLite3 $db;
+    private LoggerInterface $logger;
 
-    public function __construct(string $dbFile)
+    public function __construct(string $dbPath, LoggerInterface $logger)
     {
-        $this->connection = new \SQLite3($dbFile);
-
-        $this->connection->exec('CREATE TABLE IF NOT EXISTS users (
-            id TEXT PRIMARY KEY,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            nickname TEXT NOT NULL
-        )');
+        $this->db = new \SQLite3($dbPath);
+        $this->logger = $logger;
     }
 
     public function save(User $user): void
     {
-        $stmt = $this->connection->prepare('
+        $stmt = $this->db->prepare('
             INSERT INTO users (id, first_name, last_name, nickname) 
             VALUES (:id, :first_name, :last_name, :nickname)
         ');
@@ -35,17 +31,20 @@ class SQLiteUsersRepository implements UsersRepositoryInterface
         $stmt->bindValue(':nickname', $user->getNickname());
 
         $stmt->execute();
+
+        $this->logger->info("User {$user->getId()} saved successfully.");
     }
 
     public function get(UuidInterface $id): User
     {
-        $stmt = $this->connection->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE id = :id');
         $stmt->bindValue(':id', $id->toString());
         $result = $stmt->execute();
 
         $userData = $result->fetchArray(SQLITE3_ASSOC);
 
         if (!$userData) {
+            $this->logger->warning("User with ID {$id->toString()} not found.");
             throw new \Exception("User with ID {$id->toString()} not found.");
         }
 

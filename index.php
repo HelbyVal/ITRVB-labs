@@ -5,8 +5,15 @@ use Helby\lessons\Blog\Comment;
 use Helby\lessons\Blog\User;
 use Helby\lessons\Blog\Name;
 use Helby\lessons\Routing\Route;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 
 require __DIR__ .'/vendor/autoload.php';
+
+$logger = new Logger('app');
+$logger->pushHandler(new StreamHandler(__DIR__ . '/app.log', Logger::DEBUG));
+
 
 $router = new Route(__DIR__ . '/database.db');
 $router->dispatch();

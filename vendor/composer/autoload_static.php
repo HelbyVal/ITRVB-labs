@@ -21,8 +21,13 @@ class ComposerStaticInitff378d42fbd7f9a317f22e7b85ae911a
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
             'PhpParser\\' => 10,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
         ),
         'H' => 
         array (
@@ -51,6 +56,10 @@ class ComposerStaticInitff378d42fbd7f9a317f22e7b85ae911a
         array (
             0 => __DIR__ . '/..' . '/ramsey/collection/src',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -58,6 +67,10 @@ class ComposerStaticInitff378d42fbd7f9a317f22e7b85ae911a
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Helby\\lessons\\' => 
         array (

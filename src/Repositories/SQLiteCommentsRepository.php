@@ -4,15 +4,17 @@ namespace Helby\lessons\Repositories;
 
 use Helby\lessons\Blog\Comment;
 use Ramsey\Uuid\UuidInterface;
+use Psr\Log\LoggerInterface;
 use SQLite3;
 
 class SQLiteCommentsRepository implements CommentsRepositoryInterface
 {
     private SQLite3 $db;
-
-    public function __construct(string $databasePath)
+    private LoggerInterface $logger;
+    public function __construct(string $databasePath, loggerInterface $logger)
     {
         $this->db = new SQLite3($databasePath);
+        $this->logger = $logger;
     }
 
     public function get(UuidInterface $id): Comment
@@ -22,6 +24,7 @@ class SQLiteCommentsRepository implements CommentsRepositoryInterface
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
         if (!$result) {
+            $this->logger->warning("Comment with ID {$id->toString()} not found.");
             throw new \Exception("Comment with ID {$id->toString()} not found.");
         }
 
@@ -48,5 +51,7 @@ class SQLiteCommentsRepository implements CommentsRepositoryInterface
         $stmt->bindValue(':article_id', $comment->getArticleId(), SQLITE3_TEXT);
         $stmt->bindValue(':text', $comment->getText(), SQLITE3_TEXT);
         $stmt->execute();
+
+        $this->logger->info("Comment {$comment->getId()} saved successfully.");
     }
 }

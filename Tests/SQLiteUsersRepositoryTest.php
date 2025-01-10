@@ -5,15 +5,20 @@ use Helby\lessons\Repositories\SQLiteUsersRepository;
 use Helby\lessons\Blog\User;
 use Helby\lessons\Blog\Name;
 use Ramsey\Uuid\Guid\Guid;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class SQLiteUsersRepositoryTest extends TestCase
 {
     private SQLiteUsersRepository $repository;
-    private string $dbFile = __DIR__ . '/test.db'; 
+    private string $dbFile = __DIR__ . '/test.db';
+    private Logger $logger;
 
     protected function setUp(): void
     {
-        $this->repository = new SQLiteUsersRepository($this->dbFile);
+        $this->logger = new Logger('test');
+        $this->logger->pushHandler(new StreamHandler(__DIR__ . '/test.log', Logger::DEBUG));
+        $this->repository = new SQLiteUsersRepository($this->dbFile, $this->logger);
         $this->initializeDatabase();
     }
 
